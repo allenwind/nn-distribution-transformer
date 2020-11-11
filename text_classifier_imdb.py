@@ -4,9 +4,13 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.datasets import imdb
 from keras.preprocessing import sequence
 
+physical_devices = tf.config.experimental.list_physical_devices("GPU")
+assert len(physical_devices) > 0, "Not enough GPU hardware devices available"
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
+
 hdims = 128
 maxlen = 128
-kl_loss = False
+kl_loss = True
 num_words = 5000
 
 (X_train, y_train), (X_test, y_test) = imdb.load_data(num_words=num_words)
@@ -50,6 +54,7 @@ embedding = Embedding(num_words, hdims, embeddings_initializer="uniform", mask_z
 x = embedding(inputs)
 x = Conv1D(filters=hdims, kernel_size=2, padding="same", activation="relu")(x)
 x = MaskGlobalMaxPooling1D()(x, mask=mask)
+x = tf.keras.layers.Dense(hdims)(x)
 
 if kl_loss:
     x = KLLossLayer()(x)

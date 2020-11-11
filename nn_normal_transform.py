@@ -50,14 +50,14 @@ model.compile(optimizer="adam", loss=CentralLoss(std=False))
 model.summary()
 
 
-X = np.random.uniform(-1, 1, size=(32*200, hdims))
+X = np.random.uniform(0, 1, size=(32*200, hdims))
 y = np.random.normal(size=(32*200, hdims))
 
 model.fit(X, y, epochs=10, batch_size=32)
 
 def test(x=None):
 	if x is None:
-		x = np.random.uniform(-1, 1, size=(1, hdims))
+		x = np.random.uniform(0, 1, size=(1, hdims))
 	y = model.predict(x)
 
 	plt.subplot(211)
@@ -79,6 +79,6 @@ def test(x=None):
 
 	plt.show()
 
-test(np.random.uniform(size=(1, hdims)))
-test(np.random.uniform(size=(1, hdims)))
-test(np.random.uniform(size=(1, hdims)))
+test(np.random.uniform(0, 1, size=(1, hdims)))
+test(np.random.uniform(0, 1, size=(1, hdims)))
+test(np.random.uniform(0, 1, size=(1, hdims)))
